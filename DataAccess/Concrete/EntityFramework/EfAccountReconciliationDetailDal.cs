@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Concrete
+namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCompanyDal : EfEntityRepositoryBase<Company,ContextDb>, ICompanyDal
+    public class EfAccountReconciliationDetailDal : EfEntityRepositoryBase<AccountReconciliationDetail,ContextDb>,IAccountReconciliationDetailDal
     {
 
     }
