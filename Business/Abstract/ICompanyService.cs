@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results.Abstract;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Business.Abstract
 {
     public interface ICompanyService
     {
-        List<Company> GetList();
-
+        IResult Add(Company company);
+        IDataResult<List<Company>> GetList();
     }
 }
