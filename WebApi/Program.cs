@@ -1,4 +1,12 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Business.DependencyResolves.Autofac;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBussinessModule()));
 
 // Add services to the container.
 
