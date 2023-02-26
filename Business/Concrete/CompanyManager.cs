@@ -29,7 +29,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Company>> GetList()
         {
-            return new SuccessDataResult<List<Company>>(_companyDal.GetAll());
+            return new SuccessDataResult<List<Company>>(_companyDal.GetAll(),"Listeleme işlemi başarılı.");
         }
     }
 }
