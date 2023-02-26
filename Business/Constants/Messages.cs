@@ -12,5 +12,7 @@ namespace Business.Constants
         public static string UserNotFound = "Kullanıcı bulunamadı.";
         public static string PasswordError = "Şifre yanlış.";
         public static string SuccessfullLogin = "Giriş başarılı.";
+        public static string UserRegistered = "Kullanıcı kaydı başarılı.";
+        public static string UserAlreadyExist = "Bu kullanıcı mevcut.";
     }
 }
