@@ -20,7 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
-        builder => builder.WithOrigins("https://localhost:4200"));
+        builder => builder.WithOrigins("https://localhost:7076"));
 
 });
 
@@ -52,7 +52,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors(builder => builder.WithOrigins("https://localhost:4200").AllowAnyHeader()); //Bu adresten gelen tüm istekleri karþýla demek.
+app.UseCors(builder => builder.WithOrigins("https://localhost:7076").AllowAnyHeader()); //Bu adresten gelen tüm istekleri karþýla demek.
 
 app.UseHttpsRedirection();
 
