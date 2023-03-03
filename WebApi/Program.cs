@@ -56,6 +56,8 @@ app.UseCors(builder => builder.WithOrigins("https://localhost:7076").AllowAnyHea
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -5,6 +5,7 @@ using Core.Utilities.Hashing;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.Dtos;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,23 @@ namespace Business.Concrete
     {
         private readonly IUserService _userService;
         private readonly ITokenHelper _tokenHelper;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        private readonly ICompanyService _companyService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _companyService = companyService;
+        }
+
+        public IResult CompanyExist(Company company)
+        {
+            var result = _companyService.CompanyExist(company);
+
+            if (result.Success == false) // Bu kayıt daha önce varsa
+            {
+                return new ErrorResult(Messages.CompanyAlreadyExists);
+            }
+            return new SuccessResult();
         }
 
         public IDataResult<AccessToken> CreateAccesToken(User user,int companyId)
@@ -47,7 +61,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfullLogin);
         }
         /* Kullanıcı kayıt işlemi */
-        public IDataResult<User> Register(UserForRegister userForRegister, string password)
+        public IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password, Company company)
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -64,8 +78,33 @@ namespace Business.Concrete
                 Name = userForRegister.Name,
             };
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+            _companyService.Add(company);
+
+            _companyService.UserCompanyAdd(user.Id, company.Id);
+
+            UserCompanyDto userCompanyDto = new UserCompanyDto()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                AddedAt = user.AddedAt,
+                CompanyId = company.Id,
+                IsActive = true,
+                MailConfirm = user.MailConfirm,
+                MailConfirmDate = user.MailConfirmDate,
+                MailConfirmValue = user.MailConfirmValue,
+                PasswordHash = user.PasswordHash,
+                PasswordSalt = user.PasswordSalt,
+            };
+
+            return new SuccessDataResult<UserCompanyDto>(userCompanyDto, Messages.UserRegistered);
         }
+
+        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         /* Kayıt olan kullanıcı varsa tekrar kayıt olmasın diye yapılan metot */
         public IResult UserExist(string email)
         {
