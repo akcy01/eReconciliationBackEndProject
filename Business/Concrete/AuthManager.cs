@@ -22,13 +22,15 @@ namespace Business.Concrete
         private readonly ICompanyService _companyService;
         private readonly IMailParameterService _mailParameterService;
         private readonly IMailService _mailService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailParameterService mailParameterService, IMailService mailService)
+        private readonly IMailTemplateService _mailTemplateService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailParameterService mailParameterService, IMailService mailService , IMailTemplateService mailTemplateService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
             _companyService = companyService;
             _mailParameterService = mailParameterService;
             _mailService = mailService;
+            _mailTemplateService = mailTemplateService;
         }
 
         public IResult CompanyExist(Company company)
@@ -100,6 +102,13 @@ namespace Business.Concrete
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
             };
+
+            string subject = "Kullanıcı Kayıt Onay Maili";
+            string body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerkmektedir";
+            string link = "https://localhost:7220";
+            string linkDescription = "Kaydı onaylamak için tıklayın.";
+
+
 
             var mailParameter = _mailParameterService.Get(company.Id);
             SendMailDto sendMailDto = new SendMailDto()
