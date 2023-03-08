@@ -108,7 +108,12 @@ namespace Business.Concrete
             string link = "https://localhost:7220";
             string linkDescription = "Kaydı onaylamak için tıklayın.";
 
-
+            var mailTemplate = _mailTemplateService.GetByTemplateName("Kayıt", 3);
+            string templateBody = mailTemplate.Data.Value;
+            templateBody = templateBody.Replace("{{title}}", subject);
+            templateBody = templateBody.Replace("{{message}}", body);
+            templateBody = templateBody.Replace("{{link}}", link);
+            templateBody = templateBody.Replace("{{linkDescription}}", linkDescription);
 
             var mailParameter = _mailParameterService.Get(company.Id);
             SendMailDto sendMailDto = new SendMailDto()
