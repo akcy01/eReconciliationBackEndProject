@@ -103,25 +103,25 @@ namespace Business.Concrete
                 PasswordSalt = user.PasswordSalt,
             };
 
-            string subject = "Kullanıcı Kayıt Onay Maili";
-            string body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerkmektedir";
-            string link = "https://localhost:7220";
-            string linkDescription = "Kaydı onaylamak için tıklayın.";
+            //string subject = "Kullanıcı Kayıt Onay Maili";
+            //string body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerkmektedir";
+            //string link = "https://localhost:7220";
+            //string linkDescription = "Kaydı onaylamak için tıklayın.";
 
-            var mailTemplate = _mailTemplateService.GetByTemplateName("Kayıt", 3);
-            string templateBody = mailTemplate.Data.Value;
-            templateBody = templateBody.Replace("{{title}}", subject);
-            templateBody = templateBody.Replace("{{message}}", body);
-            templateBody = templateBody.Replace("{{link}}", link);
-            templateBody = templateBody.Replace("{{linkDescription}}", linkDescription);
+            //var mailTemplate = _mailTemplateService.GetByTemplateName("Kayıt", 3);
+            //string templateBody = mailTemplate.Data.Value;
+            //templateBody = templateBody.Replace("{{title}}", subject);
+            //templateBody = templateBody.Replace("{{message}}", body);
+            //templateBody = templateBody.Replace("{{link}}", link);
+            //templateBody = templateBody.Replace("{{linkDescription}}", linkDescription);
 
-            var mailParameter = _mailParameterService.Get(company.Id);
+            var mailParameter = _mailParameterService.Get(3);
             SendMailDto sendMailDto = new SendMailDto()
             {
                 mailParameter = mailParameter.Data,
-                Email = user.Email,
+                email = user.Email,
                 subject = "Kullanıcı onay maili",
-                body = "Kullanıcı sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklayın"
+                body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklayın"
             };
 
             _mailService.SendMail(sendMailDto);

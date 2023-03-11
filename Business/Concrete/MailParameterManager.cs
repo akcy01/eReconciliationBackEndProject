@@ -32,7 +32,7 @@ namespace Business.Concrete
             {
                 _mailParameterDal.Add(mailParameter);
             }
-            else
+            else //Kayıt varsa güncelle dedik.
             {
                 result.Data.SMTP = mailParameter.SMTP;
                 result.Data.Port = mailParameter.Port;
