@@ -27,9 +27,9 @@ namespace WebApi.Controllers
             }
 
             var companyExist = _authservice.CompanyExist(userAndCompanyRegister.Company);
-            if (!companyExist.Success) 
+            if (!companyExist.Success)
             {
-                return BadRequest(companyExist.Message);            
+                return BadRequest(companyExist.Message);
             }
 
             var registerResult = _authservice.Register(userAndCompanyRegister.UserForRegister, userAndCompanyRegister.UserForRegister.Password, userAndCompanyRegister.Company);
@@ -48,7 +48,7 @@ namespace WebApi.Controllers
         {
             var userExist = _authservice.UserExist(userForRegister.Email);
 
-            if(!userExist.Success)
+            if (!userExist.Success)
             {
                 return BadRequest(userExist.Message);
             }
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
             var registerResult = _authservice.RegisterSecondAccount(userForRegister, userForRegister.Password);
 
             var result = _authservice.CreateAccesToken(registerResult.Data, companyId); //bu if bize token'ı dönecek, altta yorum satırına aldığımızsa register işlemini komple geri döndürüyordu..
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result.Data);
             }
@@ -72,13 +72,13 @@ namespace WebApi.Controllers
         public IActionResult Login(UserForLogin userForLogin)
         {
             var userToLogin = _authservice.Login(userForLogin);
-            if(!userToLogin.Success)
+            if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin.Message);
             }
 
             var result = _authservice.CreateAccesToken(userToLogin.Data, 0);
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result.Data);
             }
@@ -92,6 +92,18 @@ namespace WebApi.Controllers
             user.MailConfirm = true;
             user.MailConfirmDate = DateTime.Now;
             var result = _authservice.Update(user);
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("sendConfirmEmail")] //Mailin tekrardan gönderilmesi işlemi.
+        public IActionResult SendConfirmEmail(int id)
+        {
+            var user = _authservice.GetById(id).Data;
+            var result = _authservice.SendConfirmEmail(user);
             if (result.Success)
             {
                 return Ok();

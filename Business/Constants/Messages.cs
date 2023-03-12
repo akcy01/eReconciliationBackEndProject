@@ -18,6 +18,7 @@ namespace Business.Constants
         public static string MailParameterUpdated = "Mail parametreleri başarıyla güncellendi.";
         public static string MailSendSuccessfull = "Mail gönderme başarılı";
         public static string UserMailConfirmSuccessfull = "Mailiniz başarıyla onaylandı";
+        public static string MailConfirmSendSuccessfull = "Onay maili tekrar gönderildi";
 
         public static string MailTemplateAdded = "Mail şablonu başarıyla kaydedildi";
         public static string MailTemplateUpdated = "Mail şablonu başarıyla güncellendi.";
