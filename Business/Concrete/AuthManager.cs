@@ -50,6 +50,12 @@ namespace Business.Concrete
             var accessToken = _tokenHelper.CreateToken(user, claims, companyId);
             return new SuccessDataResult<AccessToken>(accessToken);
         }
+
+        public IDataResult<User> GetByMailConfirmValue(string value)
+        {
+            return new SuccessDataResult<User>(_userService.GetByMailConfirmValue(value));
+        }
+
         public IDataResult<User> Login(UserForLogin userForLogin)
         {
             var userToCheck = _userService.GetByMail(userForLogin.Email);
@@ -105,7 +111,7 @@ namespace Business.Concrete
 
             string subject = "Kullanıcı Kayıt Onay Maili";
             string body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerkmektedir";
-            string link = "https://localhost:7220";
+            string link = "https://localhost:7076/api/Auth/confirmuser?value=" + user.MailConfirmValue;
             string linkDescription = "Kaydı onaylamak için tıklayın.";
 
             var mailTemplate = _mailTemplateService.GetByTemplateName("deneme", 16);
@@ -132,6 +138,12 @@ namespace Business.Concrete
         public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password)
         {
             throw new NotImplementedException();
+        }
+
+        public IResult Update(User user)
+        {
+            _userService.Update(user);
+            return new SuccessResult(Messages.UserMailConfirmSuccessfull);
         }
 
         /* Kayıt olan kullanıcı varsa tekrar kayıt olmasın diye yapılan metot */

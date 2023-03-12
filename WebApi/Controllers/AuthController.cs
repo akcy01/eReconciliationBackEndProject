@@ -67,6 +67,7 @@ namespace WebApi.Controllers
             //}
             return BadRequest(registerResult.Message);
         }
+
         [HttpPost("login")]
         public IActionResult Login(UserForLogin userForLogin)
         {
@@ -80,6 +81,20 @@ namespace WebApi.Controllers
             if(result.Success)
             {
                 return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("confirmuser")]
+        public IActionResult ConfirmUser(string value) //Users'daki mailconfirmvalue'yi yakalıyoruz string value ile.
+        {
+            var user = _authservice.GetByMailConfirmValue(value).Data;
+            user.MailConfirm = true;
+            user.MailConfirmDate = DateTime.Now;
+            var result = _authservice.Update(user);
+            if (result.Success)
+            {
+                return Ok();
             }
             return BadRequest(result.Message);
         }
