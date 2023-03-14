@@ -143,6 +143,9 @@ namespace Business.Concrete
             };
 
             _mailService.SendMail(sendMailDto);
+
+            user.MailConfirmDate = DateTime.Now;
+            _userService.Update(user);
         }
 
         public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password)
@@ -168,6 +171,26 @@ namespace Business.Concrete
 
          IResult IAuthService.SendConfirmEmail(User user)
         {
+            if(user.MailConfirm == true)
+            {
+                return new ErrorResult(Messages.MailAlreadyConfirm);
+            }
+
+            DateTime confirmMailDate = user.MailConfirmDate;
+            DateTime now = DateTime.Now;
+            if(confirmMailDate.ToShortDateString() == now.ToShortDateString()) //ToShortDateString metodu tarihteki saatleri siler. Burada eğer confirm mailinin gönderildiği tarih bugünse dedik
+            {
+                if(confirmMailDate.Hour == now.Hour && confirmMailDate.AddMinutes(5).Minute <= now.Minute) //Eğer confirm mailinin atıldığı saat şimdiyse ve 5 dakikayı geçtiyse maili gönder dedik.
+                {
+                    SendConfirmEmail(user);
+                    return new SuccessResult(Messages.MailConfirmSendSuccessfull);
+                }
+                else
+                {
+                    return new ErrorResult(Messages.MailConfirmTimeHasNotExpired);
+                }
+            }
+
             SendConfirmEmail(user);
             return new SuccessResult(Messages.MailConfirmSendSuccessfull);
         }
