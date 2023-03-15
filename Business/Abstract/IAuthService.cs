@@ -15,7 +15,7 @@ namespace Business.Abstract
     public interface IAuthService
     {
         IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password, Company company);
-        IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password);
+        IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password, int companyId);
         IDataResult<User> Login(UserForLogin userForLogin);
         IDataResult<User> GetByMailConfirmValue(string value);
         IDataResult<User> GetById(int id);

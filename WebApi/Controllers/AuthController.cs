@@ -44,7 +44,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("registerSecondAccount")]
-        public IActionResult RegisterSecondAccount(UserForRegister userForRegister, int companyId)
+        public IActionResult RegisterSecondAccount(UserForRegisterToSecondAccountDto userForRegister)
         {
             var userExist = _authservice.UserExist(userForRegister.Email);
 
@@ -53,18 +53,14 @@ namespace WebApi.Controllers
                 return BadRequest(userExist.Message);
             }
 
-            var registerResult = _authservice.RegisterSecondAccount(userForRegister, userForRegister.Password);
+            var registerResult = _authservice.RegisterSecondAccount(userForRegister, userForRegister.Password, userForRegister.CompanyId);
 
-            var result = _authservice.CreateAccesToken(registerResult.Data, companyId); //bu if bize token'ı dönecek, altta yorum satırına aldığımızsa register işlemini komple geri döndürüyordu..
+            var result = _authservice.CreateAccesToken(registerResult.Data, userForRegister.CompanyId); //bu if bize token'ı dönecek, altta yorum satırına aldığımızsa register işlemini komple geri döndürüyordu..
             if (result.Success)
             {
                 return Ok(result.Data);
             }
 
-            //if(registerResult.Success)
-            //{
-            //    return Ok(registerResult);
-            //}
             return BadRequest(registerResult.Message);
         }
 

@@ -148,9 +148,28 @@ namespace Business.Concrete
             _userService.Update(user);
         }
 
-        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password)
+        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password, int companyId)
         {
-            throw new NotImplementedException();
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var user = new User()
+            {
+                Email = userForRegister.Email,
+                AddedAt = DateTime.Now,
+                IsActive = true,
+                MailConfirm = false,
+                MailConfirmDate = DateTime.Now,
+                MailConfirmValue = Guid.NewGuid().ToString(),
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Name = userForRegister.Name,
+            };
+
+            _userService.Add(user);
+            _companyService.UserCompanyAdd(user.Id, companyId);
+            SendConfirmEmail(user);
+
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
         public IResult Update(User user)
