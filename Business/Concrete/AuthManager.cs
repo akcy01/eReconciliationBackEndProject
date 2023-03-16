@@ -213,5 +213,10 @@ namespace Business.Concrete
             SendConfirmEmail(user);
             return new SuccessResult(Messages.MailConfirmSendSuccessfull);
         }
+
+        public IDataResult<UserCompany> GetCompany(int userId)
+        {
+            return new SuccessDataResult<UserCompany>(_companyService.GetCompany(userId).Data);
+        }
     }
 }

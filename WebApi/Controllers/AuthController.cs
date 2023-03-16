@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results.Concrete;
 using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -73,12 +74,18 @@ namespace WebApi.Controllers
                 return BadRequest(userToLogin.Message);
             }
 
-            var result = _authservice.CreateAccesToken(userToLogin.Data, 0);
-            if (result.Success)
+            if(userToLogin.Data.IsActive)
             {
-                return Ok(result.Data);
+                var userCompany = _authservice.GetCompany(userToLogin.Data.Id).Data;
+                var result = _authservice.CreateAccesToken(userToLogin.Data, userCompany.CompanyId);
+                if (result.Success)
+                {
+                    return Ok(result.Data);
+                }
+                return BadRequest(result.Message);
             }
-            return BadRequest(result.Message);
+            return BadRequest("Kullanıcı pasif durumda. Aktif etmek için yöneticinize danışın.");
+
         }
 
         [HttpGet("confirmuser")]

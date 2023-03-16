@@ -24,5 +24,6 @@ namespace Business.Abstract
         IResult CompanyExist(Company company);
         IResult SendConfirmEmail(User user);
         IDataResult<AccessToken> CreateAccesToken(User user, int companyId);
+        IDataResult<UserCompany> GetCompany(int userId);
     }
 }
