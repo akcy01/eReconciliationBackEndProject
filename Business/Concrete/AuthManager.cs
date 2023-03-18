@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Transaction;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Hashing;
@@ -81,6 +82,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfullLogin);
         }
         /* Kullanıcı kayıt işlemi */
+        [TransactionScopeAspect] //Şirket veya kullanıcı, ikisinden biri kayıt olurken hata olursa kayıt gerçekleşmesin diye bunu ekledik.Örndeğin şirket adı eksik kalırsa kullanıcıyı da şirketi de eklemesin. Transaction bu işe yarıyor.
         public IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password, Company company)
         {
             byte[] passwordHash, passwordSalt;
