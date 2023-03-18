@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -22,6 +24,7 @@ namespace Business.Concrete
             _companyDal = companyDal;
         }
 
+        [ValidationAspect(typeof(CompanyValidator))]
         public IResult Add(Company company)
         {
             _companyDal.Add(company);

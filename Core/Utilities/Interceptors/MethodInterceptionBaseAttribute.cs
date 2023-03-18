@@ -1,4 +1,4 @@
-﻿using Castle.Core.Interceptor;
+﻿using Castle.DynamicProxy;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
