@@ -13,6 +13,8 @@ namespace Business.Abstract
     public interface ICompanyService
     {
         IResult Add(Company company);
+        IResult Update(Company company); //Şirketin durumunu aktiften pasife geçirme pasiften aktife geçirmek için.
+        IDataResult<Company> GetById(int id);
         IResult AddCompanyAndUserCompany(CompanyDto companyDto);
         IDataResult<List<Company>> GetList();
         IDataResult<UserCompany> GetCompany(int userId);

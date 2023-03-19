@@ -25,11 +25,34 @@ namespace WebApi.Controllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpGet("getcompany")]
+        public IActionResult GetById(int id)
+        {
+            var result = _companyService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
         [HttpPost("addCompanyAndUserCompany")] // Kullanıcı bir şirket daha ekleyebilsin diye.Kullanıcı şirket ekleme.
         public IActionResult AddCompanyAndUserCompany(CompanyDto companyDto)
         {
             var result = _companyService.AddCompanyAndUserCompany(companyDto);
             if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("updateCompany")] 
+        public IActionResult UpdateCompany(Company company)
+        {
+            var result = _companyService.Update(company);
+            if (result.Success)
             {
                 return Ok(result);
             }

@@ -53,6 +53,11 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<Company> GetById(int id)
+        {
+            return new SuccessDataResult<Company>(_companyDal.Get(p => p.Id == id));
+        }
+
         public IDataResult<UserCompany> GetCompany(int userId)
         {
             return new SuccessDataResult<UserCompany>(_companyDal.GetCompany(userId));
@@ -61,6 +66,12 @@ namespace Business.Concrete
         public IDataResult<List<Company>> GetList()
         {
             return new SuccessDataResult<List<Company>>(_companyDal.GetAll(),"Listeleme işlemi başarılı.");
+        }
+
+        public IResult Update(Company company)
+        {
+            _companyDal.Update(company);
+            return new SuccessResult(Messages.UpdatedCompany);
         }
 
         public IResult UserCompanyAdd(int userId, int companyId)
