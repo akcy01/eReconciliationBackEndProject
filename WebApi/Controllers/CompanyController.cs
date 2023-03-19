@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -24,10 +25,10 @@ namespace WebApi.Controllers
             }
             return BadRequest(result.Message);
         }
-        [HttpPost("addcompany")]
-        public IActionResult AddCompany(Company company)
+        [HttpPost("addCompanyAndUserCompany")] // Kullanıcı bir şirket daha ekleyebilsin diye.Kullanıcı şirket ekleme.
+        public IActionResult AddCompanyAndUserCompany(CompanyDto companyDto)
         {
-            var result = _companyService.Add(company);
+            var result = _companyService.AddCompanyAndUserCompany(companyDto);
             if(result.Success)
             {
                 return Ok(result);
