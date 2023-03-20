@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -28,6 +29,13 @@ namespace Business.Concrete
         {
             _currencyAccountDal.Add(currencyAccount);
             return new SuccessResult(Messages.AddedCurrencyAccount);
+        }
+
+        [ValidationAspect(typeof(CurrencyAccountValidator))]
+        [TransactionScopeAspect]
+        public IResult AddToExcel(string fileName)
+        {
+            throw new NotImplementedException();
         }
 
         public IResult Delete(CurrencyAccount currencyAccount)

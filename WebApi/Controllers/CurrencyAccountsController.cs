@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,31 @@ namespace WebApi.Controllers
         {
             _currencyAccountService = currencyAccountService;
         }
+
+        [HttpPost("addFromExcel")]
+        public IActionResult AddFromExcel(CurrencyAccountExcelDto currencyAccount)
+        {
+            if(currencyAccount.File.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + ".xlsx";
+                var filePath = $"({Directory.GetCurrentDirectory()}/Content/{fileName})";
+                using (FileStream stream = System.IO.File.Create(filePath))
+                {
+                    currencyAccount.File.CopyTo(stream);
+                    stream.Flush();
+                }
+
+                var result = _currencyAccountService.AddToExcel(filePath);
+                if (result.Success)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result.Message);
+            }
+
+            return BadRequest("Dosya seçimi yapmadınız");
+        }
+
         [HttpPost("add")]
         public IActionResult Add(CurrencyAccount currencyAccount)
         {
