@@ -26,6 +26,14 @@ namespace Business.Constants
         public static string UpdatedCurrencyAccount = "Cari kaydı başarıyla güncellendi";
         public static string DeletedCurrencyAccount = "Cari kaydı başarıyla silindi";
 
+
+
+        public static string AddedAccountReconciliation = "Cari mütabakat kaydı başarıyla eklendi.";
+        public static string UpdatedAccountReconciliation = "Cari mütabakat kaydı başarıyla güncellendi.";
+        public static string DeletedAccountReconciliation = "Cari mütabakat kaydı başarıyla silindi.";
+
+
+
         public static string MailTemplateAdded = "Mail şablonu başarıyla kaydedildi";
         public static string MailTemplateUpdated = "Mail şablonu başarıyla güncellendi.";
         public static string MailTemplateDeleted = "Mail şablonu başarıyla silindi";
