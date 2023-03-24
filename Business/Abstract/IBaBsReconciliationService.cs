@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Core.Utilities.Results.Abstract;
+using Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,11 @@ namespace Business.Abstract
 {
     public interface IBaBsReconciliationService
     {
-
+        IResult Add(BaBsReconciliation babsReconciliation);
+        IResult AddToExcel(string filePath, int companyId);
+        IResult Update(BaBsReconciliation babsReconciliation);
+        IResult Delete(BaBsReconciliation babsReconciliation);
+        IDataResult<BaBsReconciliation> GetById(int id);
+        IDataResult<List<BaBsReconciliation>> GetList(int companyId);
     }
 }
