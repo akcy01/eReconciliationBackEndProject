@@ -27,7 +27,7 @@ namespace Core.Aspects.Caching
             var methodName = string.Format($"{invocation.Method.ReflectedType.FullName}.{invocation.Method.Name}"); //metodu metodun imzalarını vs yakalamak için yaptıgımız işlemler.
             var arguments = invocation.Arguments.ToList();
             var key = $"{methodName}({string.Join(" , ", arguments.Select(x => x?.ToString() ?? "<Null>"))})";
-            if(_cacheManager.IsAdd(key))
+            if(_cacheManager.IsAdd(key))//Daha önce cach varsa onu getirir yoksa yenisini oluşturur ve kaydeder.
             {
                 invocation.ReturnValue = _cacheManager.Get(key);
                 return;
