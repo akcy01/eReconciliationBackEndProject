@@ -26,12 +26,14 @@ namespace Business.Concrete
             _currencyAccountService = currencyAccountService;
         }
 
+        [CacheRemoveAspect("IAccountReconciliationService.Get")]
         public IResult Add(AccountReconciliation accountReconciliation)
         {
             _accountReconciliationDal.Add(accountReconciliation);
             return new SuccessResult(Messages.AddedAccountReconciliation);
         }
 
+        [CacheRemoveAspect("IAccountReconciliationService.Get")]
         [TransactionScopeAspect]
         public IResult AddToExcel(string filePath, int companyId)
         {
@@ -75,12 +77,14 @@ namespace Business.Concrete
             return new SuccessResult(Messages.AddedAccountReconciliation);
         }
 
+        [CacheRemoveAspect("IAccountReconciliationService.Get")]
         public IResult Delete(AccountReconciliation accountReconciliation)
         {
             _accountReconciliationDal.Delete(accountReconciliation);
             return new SuccessResult(Messages.DeletedAccountReconciliation);
         }
 
+        [CacheAspect(60)]
         public IDataResult<AccountReconciliation> GetById(int id)
         {
             return new SuccessDataResult<AccountReconciliation>(_accountReconciliationDal.Get(p => p.Id == id));
@@ -91,6 +95,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<AccountReconciliation>>(_accountReconciliationDal.GetAll(p => p.CompanyId == companyId));
         }
 
+        [CacheRemoveAspect("IAccountReconciliationService.Get")]
         public IResult Update(AccountReconciliation accountReconciliation)
         {
             _accountReconciliationDal.Update(accountReconciliation);
