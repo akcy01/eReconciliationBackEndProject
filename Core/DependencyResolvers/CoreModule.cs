@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace Core.DependencyResolvers
 {
-    internal class CoreModule
+    public class CoreModule : ICoreModule
     {
+        public void Load(IServiceCollection services)
+        {
+            services.AddMemoryCache();
+        }
     }
 }
