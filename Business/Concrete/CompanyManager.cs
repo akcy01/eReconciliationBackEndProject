@@ -1,9 +1,11 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Aspects.Caching;
+using Core.Aspects.Performance;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -74,6 +76,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Company>>(_companyDal.GetAll(),"Listeleme işlemi başarılı.");
         }
 
+        [PerformanceAspect(3)]
+        [SecuredOperation("Company.Update,Admin")]
         [CacheRemoveAspect("ICompanyService.Get")]
         public IResult Update(Company company)
         {
