@@ -41,7 +41,7 @@ namespace Business.Concrete
             return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(i => i.Id == id));
         }
 
-        [SecuredOperation("Admin")]
+        [SecuredOperation("Admin, OperationClaim.GetList")]
         public IDataResult<List<OperationClaim>> GetList()
         {
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetAll());
