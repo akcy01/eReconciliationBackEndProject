@@ -27,7 +27,9 @@ namespace Business.Concrete
         private readonly IMailParameterService _mailParameterService;
         private readonly IMailService _mailService;
         private readonly IMailTemplateService _mailTemplateService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailParameterService mailParameterService, IMailService mailService , IMailTemplateService mailTemplateService)
+        private readonly IUserOperationClaimService _userOperationClaimService;
+        private readonly IOperationClaimService _operationClaimService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailParameterService mailParameterService, IMailService mailService, IMailTemplateService mailTemplateService, IUserOperationClaimService userOperationClaimService, IOperationClaimService operationClaimService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
@@ -35,6 +37,8 @@ namespace Business.Concrete
             _mailParameterService = mailParameterService;
             _mailService = mailService;
             _mailTemplateService = mailTemplateService;
+            _userOperationClaimService = userOperationClaimService;
+            _operationClaimService = operationClaimService;
         }
 
         public IResult CompanyExist(Company company)
@@ -48,7 +52,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<AccessToken> CreateAccesToken(User user,int companyId)
+        public IDataResult<AccessToken> CreateAccesToken(User user, int companyId)
         {
             var claims = _userService.GetClaims(user, companyId);
             var accessToken = _tokenHelper.CreateToken(user, claims, companyId);
@@ -74,7 +78,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
-            if(!HashingHelper.VerifyPasswordHash(userForLogin.Password,userToCheck.PasswordHash,userToCheck.PasswordSalt)) 
+            if (!HashingHelper.VerifyPasswordHash(userForLogin.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
                 return new ErrorDataResult<User>(Messages.PasswordError);
             }
@@ -190,25 +194,25 @@ namespace Business.Concrete
         /* Kayıt olan kullanıcı varsa tekrar kayıt olmasın diye yapılan metot */
         public IResult UserExist(string email)
         {
-            if(_userService.GetByMail(email) != null)
+            if (_userService.GetByMail(email) != null)
             {
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
             return new SuccessResult();
         }
 
-         IResult IAuthService.SendConfirmEmail(User user)
+        IResult IAuthService.SendConfirmEmail(User user)
         {
-            if(user.MailConfirm == true)
+            if (user.MailConfirm == true)
             {
                 return new ErrorResult(Messages.MailAlreadyConfirm);
             }
 
             DateTime confirmMailDate = user.MailConfirmDate;
             DateTime now = DateTime.Now;
-            if(confirmMailDate.ToShortDateString() == now.ToShortDateString()) //ToShortDateString metodu tarihteki saatleri siler. Burada eğer confirm mailinin gönderildiği tarih bugünse dedik
+            if (confirmMailDate.ToShortDateString() == now.ToShortDateString()) //ToShortDateString metodu tarihteki saatleri siler. Burada eğer confirm mailinin gönderildiği tarih bugünse dedik
             {
-                if(confirmMailDate.Hour == now.Hour && confirmMailDate.AddMinutes(5).Minute <= now.Minute) //Eğer confirm mailinin atıldığı saat şimdiyse ve 5 dakikayı geçtiyse maili gönder dedik.
+                if (confirmMailDate.Hour == now.Hour && confirmMailDate.AddMinutes(5).Minute <= now.Minute) //Eğer confirm mailinin atıldığı saat şimdiyse ve 5 dakikayı geçtiyse maili gönder dedik.
                 {
                     SendConfirmEmail(user);
                     return new SuccessResult(Messages.MailConfirmSendSuccessfull);
