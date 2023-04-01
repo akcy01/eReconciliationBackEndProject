@@ -47,10 +47,13 @@ namespace Business.Constants
         public static string DeletedAccountReconciliationDetail = "Cari mütabakat detay kaydı başarıyla silindi.";
 
 
-
         public static string MailTemplateAdded = "Mail şablonu başarıyla kaydedildi";
         public static string MailTemplateUpdated = "Mail şablonu başarıyla güncellendi.";
         public static string MailTemplateDeleted = "Mail şablonu başarıyla silindi";
 
+
+        public static string AddedOperationClaim = "Yetki başarıyla eklendi";
+        public static string UpdatedOperationClaim = "Yetki başarıyla eklendi";
+        public static string DeletedOperationClaim = "Yetki başarıyla eklendi";
     }
 }
