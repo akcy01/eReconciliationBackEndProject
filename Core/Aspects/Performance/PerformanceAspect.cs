@@ -47,7 +47,7 @@ namespace Core.Aspects.Performance
             SendMailDto sendMailDto = new SendMailDto()
             {
                 Email = "emutabakat3@hotmail.com",
-                Password = "o.akcay123",
+                Password = "A.akcay123",
                 Port = 587,
                 SMTP = "smtp.office365.com",
                 SSL = true,
